@@ -7,7 +7,7 @@ def calculate_return(price):
     returns = [None]
 
     for i in range(1,len(price)):
-        daily_return = (price[i] - price[i-1])/price[i-1]
+        daily_return = (price.iloc[i] - price.iloc[i-1])/price.iloc[i-1]
         returns.append(daily_return)
 
     return returns
@@ -56,14 +56,28 @@ def backtester(returns, signal, transaction_cost):
 
     performance_return = df["net_strategy_return"]
 
-    initial_equity = 1.0
-    df.loc[0, "equity"] = initial_equity
-    
-    for i in range(1,len(df["equity"])):
-        df.loc[i, "equity"] = df.loc[i-1, "equity"] * (1 + performance_return[i])
+    first_valid = performance_return.first_valid_index()
 
-    final_equity = float(df.loc[len(df)-1, "equity"])
-    total_return = final_equity/initial_equity - 1
+    if first_valid is None:
+        raise ValueError("No valid strategy returns were generated.")
+
+    initial_equity = 1.0
+
+    df["equity"] = np.nan
+    start_index = first_valid - 1
+
+    df.loc[start_index, "equity"] = initial_equity
+    
+    for i in range(first_valid, len(df)):
+
+        previous_equity = float(df.loc[i - 1, "equity"])
+        current_return = float(performance_return.iloc[i])
+
+        df.loc[i, "equity"] = (previous_equity * (1 + current_return))
+
+    final_equity = float(df["equity"].dropna().iloc[-1])
+
+    total_return = (final_equity / initial_equity) - 1
 
 
     # Volatility + Sharpe Ratio
@@ -80,7 +94,9 @@ def backtester(returns, signal, transaction_cost):
 
     # Drawdown
 
-    df.loc[0, "running_peak"] = df.loc[0, "equity"]
+    df["running_peak"] = np.nan
+
+    df.loc[start_index, "running_peak"] = initial_equity
     
     for i in range(1, len(df["equity"])):
         df.loc[i, "running_peak"] = max(df.loc[i, "equity"], df.loc[i-1, "running_peak"])
