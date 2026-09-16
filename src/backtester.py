@@ -33,22 +33,16 @@ def backtester(returns, signal, transaction_cost):
 
     # Trade Counts
 
-    position = df["position"].fillna(0).tolist()
-    trade_indicator = [0]
-    
-    for i in range(1, len(position)):
-        if position[i] != position[i-1]:
-            trade_indicator.append(1)
-        else:
-            trade_indicator.append(0)
-    
-    df["trade"] = trade_indicator
-    trade_count = df["trade"].sum()
+    position = df["position"].fillna(0)
+    previous_position = position.shift(1).fillna(0)
+
+    trade_indicator = (position != previous_position).astype(int)
+    trade_count = trade_indicator.sum()
 
 
     # Transaction Costs
 
-    df["transaction_cost"] = df["trade"] * transaction_cost
+    df["transaction_cost"] = trade_indicator * transaction_cost
     df["net_strategy_return"] = df["strategy_return"] - df["transaction_cost"]
 
 
@@ -68,12 +62,10 @@ def backtester(returns, signal, transaction_cost):
 
     df.loc[start_index, "equity"] = initial_equity
     
-    for i in range(first_valid, len(df)):
-
-        previous_equity = float(df.loc[i - 1, "equity"])
-        current_return = float(performance_return.iloc[i])
-
-        df.loc[i, "equity"] = (previous_equity * (1 + current_return))
+    valid_return = performance_return.dropna()
+    compounded_equity = (1 + valid_return).cumprod()
+    
+    df.loc[compounded_equity.index, "equity"] = compounded_equity
 
     final_equity = float(df["equity"].dropna().iloc[-1])
 
@@ -94,12 +86,7 @@ def backtester(returns, signal, transaction_cost):
 
     # Drawdown
 
-    df["running_peak"] = np.nan
-
-    df.loc[start_index, "running_peak"] = initial_equity
-    
-    for i in range(1, len(df["equity"])):
-        df.loc[i, "running_peak"] = max(df.loc[i, "equity"], df.loc[i-1, "running_peak"])
+    df["running_peak"] = df["equity"].cummax()
     
     df["drawdown"] = df["equity"] / df["running_peak"] - 1
     max_drawdown = df["drawdown"].min()
