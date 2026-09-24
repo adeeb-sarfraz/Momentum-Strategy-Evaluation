@@ -9,17 +9,17 @@ def summary(simulation_df, momentum_results, plot_title):
     print(f"Average No. of Trades: {simulation_df['trades'].mean():.4f}")
     print(f"Average Time Invested: {simulation_df['time_invested'].mean():.4f}")
 
-    fraction_numerator = 0
+    x = 0
 
     simulation_sharpe_ratio = simulation_df["annual_sharpe"]
 
     for i in range(len(simulation_sharpe_ratio)):
         if simulation_sharpe_ratio[i] >= momentum_results["annual_sharpe"]:
-            fraction_numerator += 1
+            x += 1
 
-    p_value = fraction_numerator/len(simulation_sharpe_ratio)
+    p_value = ((x + 1)/(len(simulation_sharpe_ratio) + 1))
 
-    print("Empirical p-value:", p_value)
+    print("Empirical p-value:", round(p_value, 4))
 
     plt.figure(figsize=(8, 5))
 
