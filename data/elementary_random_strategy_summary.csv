@@ -1,0 +1,2 @@
+strategy,mean_sharpe,median_sharpe,max_sharpe,p_value,avg_trades,avg_time_invested,number_of_simulations
+elementary_random_strategy,-0.5424810348016529,-0.5421595588256599,0.09200310246617936,9.99990000099999e-06,3229.8459,0.5000015990712074,100000

@@ -1,0 +1,2 @@
+strategy,mean_sharpe,median_sharpe,max_sharpe,p_value,avg_trades,avg_time_invested,number_of_simulations
+cyclic_shift_random_strategy,0.4735045892756513,0.4423675543028695,1.1810520169818952,0.1101688983110169,90.76216,0.7752321981424152,100000

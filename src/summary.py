@@ -1,16 +1,11 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
-def summary(simulation_df, momentum_results, plot_title):
-
-    print(f"Sharpe Average: {simulation_df['annual_sharpe'].mean():.4f}")
-    print(f"Sharpe Median:  {simulation_df['annual_sharpe'].median():.4f}")
-    print(f"Largest Sharpe: {simulation_df['annual_sharpe'].max():.4f}")
-    print(f"Average No. of Trades: {simulation_df['trades'].mean():.4f}")
-    print(f"Average Time Invested: {simulation_df['time_invested'].mean():.4f}")
+def summary(simulation_df, momentum_results, strategy):
 
     x = 0
-
+    
     simulation_sharpe_ratio = simulation_df["annual_sharpe"]
 
     for i in range(len(simulation_sharpe_ratio)):
@@ -19,7 +14,28 @@ def summary(simulation_df, momentum_results, plot_title):
 
     p_value = ((x + 1)/(len(simulation_sharpe_ratio) + 1))
 
-    print("Empirical p-value:", round(p_value, 4))
+    summary_stats = {
+        "strategy": strategy,
+        "mean_sharpe": simulation_df["annual_sharpe"].mean(),
+        "median_sharpe": simulation_df["annual_sharpe"].median(),
+        "max_sharpe": simulation_df["annual_sharpe"].max(),
+        "p_value": p_value,
+        "avg_trades": simulation_df["trades"].mean(),
+        "avg_time_invested": simulation_df["time_invested"].mean(),
+        "number_of_simulations": len(simulation_df)
+    }
+
+    strategy_name = strategy.replace("_", " ").title()
+
+    for key, value in summary_stats.items():
+        if key != "strategy":
+            print(f"{key.replace('_', ' ').title()}: {value:.5f}".rstrip("0").rstrip("."))
+
+
+    pd.DataFrame([summary_stats]).to_csv(
+        f"../../data/{strategy}_summary.csv",index=False
+    )
+
 
     plt.figure(figsize=(8, 5))
 
@@ -41,7 +57,7 @@ def summary(simulation_df, momentum_results, plot_title):
 
     plt.xlabel("Sharpe Ratio")
     plt.ylabel("Frequency")
-    plt.title(plot_title)
+    plt.title(f"Distribution of {strategy_name} Sharpe Ratios")
 
     plt.legend()
 
@@ -49,3 +65,7 @@ def summary(simulation_df, momentum_results, plot_title):
 
     plt.tight_layout()
     plt.show()
+
+    return summary_stats
+
+    
