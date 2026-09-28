@@ -1,0 +1,7 @@
+Strategy,Mean Sharpe,Median Sharpe,Max Sharpe,P Value,Avg Trades,Avg Time Invested,Number Of Simulations
+Elementary,-0.5425,-0.5422,0.092,1e-05,3229.85,50.00%,100000
+Exposure Matched,-0.0361,-0.0365,0.3807,1e-05,2251.88,77.52%,100000
+Trade Count Matched,0.3758,0.3705,1.0105,0.03649,89.0,50.00%,100000
+Exposure + Trade Count Matched,0.4694,0.4641,0.9461,0.04709,89.0,77.52%,100000
+Run Length Permutation,0.4738,0.4601,0.9846,0.07784,89.0,77.52%,100000
+Cyclic Shift,0.4735,0.4424,1.1811,0.11017,90.76,77.52%,100000
