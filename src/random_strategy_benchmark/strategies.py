@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from src.backtester import backtester
+from random_strategy_benchmark.backtester import backtester
 
 
 def generate_momentum_signal(prices, lookback):

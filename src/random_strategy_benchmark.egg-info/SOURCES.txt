@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+src/random_strategy_benchmark/__init__.py
+src/random_strategy_benchmark/backtester.py
+src/random_strategy_benchmark/strategies.py
+src/random_strategy_benchmark/summary.py
+src/random_strategy_benchmark.egg-info/PKG-INFO
+src/random_strategy_benchmark.egg-info/SOURCES.txt
+src/random_strategy_benchmark.egg-info/dependency_links.txt
+src/random_strategy_benchmark.egg-info/top_level.txt
