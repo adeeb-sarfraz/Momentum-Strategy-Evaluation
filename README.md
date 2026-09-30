@@ -4,7 +4,7 @@
 
 Testing whether a 12-month SPY momentum strategy exhibits performance beyond increasingly structure-preserving random benchmarks. 
 
-We use a time series momentum strategy. This project aims to construct progressively more constrained null models to benchmark momentum's risk-adjusted performance. 
+We use a time series momentum strategy. This project aims to construct progressively more constrained null models to benchmark momentum's risk-adjusted performance. SPY data used for analysis is contained within data/spy_daily.csv
 
 ## Research Question
 
@@ -119,13 +119,16 @@ random_strategy_benchmark/
 │   ├── 2.0_momentum_strategy.ipynb
 │   └── 4.0_comparison_table.ipynb
 ├── src/
-│   ├── backtester.py
-│   ├── strategies.py
-│   └── summary.py
+│   └── random_strategy_benchmark/
+│       ├── __init__.py
+│       ├── backtester.py
+│       ├── strategies.py
+│       └── summary.py
+├── pyproject.toml
 ├── requirements.txt
 └── README.md
 ```
-Note that "data/" contains SPY dataset plus generated benchmark results, "backtester/" includes 5 iterations of backtester optimising, "random_benchmarks/" contains the 6 null-model notebooks used for comparison. 
+Note that "data/" contains SPY dataset plus generated benchmark results, "backtester/" includes 5 iterations of backtester optimising, "random_benchmarks/" contains the 6 null-model notebooks used for comparison, src/random_strategy_benchmark contains Python package used by notebooks including backtesters, strategy generators and summary functions. 
 
 
 ## Reproducing analysis
@@ -135,6 +138,7 @@ Install required packages with:
 
 ```bash
 pip install -r requirements.txt
+pip install -e .
 ```
 
 ## Future work
