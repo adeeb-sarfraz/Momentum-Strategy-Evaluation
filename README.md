@@ -24,7 +24,7 @@ $$
 
 where:
 - $P_t$ = SPY price on day t
-- $P_t-252$ = SPY price 252 trading days earlier
+- $P_{t-252}$ = SPY price 252 trading days earlier
 - $s_t$ = 1 = invested in SPY
 - $s_t$ = 0 = cash
 
