@@ -29,9 +29,9 @@ where:
 - $s_t$ = 0 = cash
 
 To ensure today's closing price is not used to generate a signal and retroactively earn today's return, use a one day execution lag:
-$$
+```math
 \text{Position}_{t+1} = s_t
-$$
+```
 
 We choose momentum for its simplicity and economic interpretability - main focus of the project is stasticial benchmarking, rather than strategy optimization. Momentum tests a clear hypothesis, that return trends exhibit some persistence. 
 
